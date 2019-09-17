@@ -5,12 +5,11 @@
     <script src="data_generator.js"></script>
     <script>
       $(document).ready(function() {
-        var $tweetBox = $("#tweet");
+        var $tweetBox = $('#tweet');
         var index = streams.home.length - 1;
         while(index >= 0) {
           var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + ' tweeted at ' + tweet.created_at.getHours() + ':' + tweet.created_at.getMinutes());
+          $tweet = tweetRender(tweet);
           $tweet.appendTo($tweetBox);
           index -= 1;
         }
