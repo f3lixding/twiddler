@@ -14,19 +14,39 @@ streams.users.douglascalhoun = [];
 window.users = Object.keys(streams.users);
 
 // stuff added
+var targetName = (this.document.URL).split('/').pop().split('.').shift();
+var target = targetName === "index" ? streams.home : streams.users[targetName];
+
+var filter = function(user) { //arg is string
+  var $tweets = $('.tweets');
+  targetName = user;
+  for(var i=0; i<$tweets.length; i++) {
+    if($tweets[i].className.split(' ')[1] != user) {
+      $($tweets[i]).hide();
+    }
+  }
+};
+
+var getUserName = function(next) { // arg is expected to be tweets classed div
+  return next[0].className.split(' ')[1];
+};
+
 var tweetRender = function(tweet) {
-  var $tweet = $('<div class="tweets"></div>');
-  var userName = '<a href="' + tweet.user + '.html' + '">' + tweet.user + '</a>';
-  $tweet.html('@' + userName + ': ' + tweet.message + ' tweeted at ' + tweet.created_at.getHours() + ':' + tweet.created_at.getMinutes());
-  return $tweet;
-}
+  if(tweet) {
+    var $tweet = $('<div class="tweets"></div>');
+    var userName = '<button class="userNames" type="button">' + tweet.user + '</button>';
+    $tweet.html('@' + userName + ': ' + tweet.message + ' tweeted at ' + tweet.created_at.getHours() + ':' + tweet.created_at.getMinutes());
+    $tweet.addClass(`${tweet.user}`);
+    return $tweet;
+  }
+};
 
 var updateCreator = function(wait) {
   var canBeCalled = true;
   var tweetsCollector = [];
   var limitLen = 50;
-  return function() {
-    var tweet = streams.home[streams.home.length-1];
+  return function(target) {
+    var tweet = target[target.length-1];
     tweetsCollector.unshift(tweetRender(tweet));
     if(canBeCalled) {
       canBeCalled = false;
@@ -35,7 +55,7 @@ var updateCreator = function(wait) {
       while(tweetsToPush--) {
         $tweetBox.prepend(tweetsCollector.pop());
         while($('.tweets').length > limitLen) {
-          $(`.tweets:last-child`).remove();
+          $('.tweets:last-child').remove();
         }
       }
       (function() { setTimeout(function() { canBeCalled = true; }, wait)})(wait);
@@ -43,7 +63,7 @@ var updateCreator = function(wait) {
   }
 };
 
-var update = updateCreator(5000);
+var update = updateCreator(10000);
 
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet){
@@ -76,7 +96,7 @@ var generateRandomTweet = function(){
   tweet.message = randomMessage();
   tweet.created_at = new Date();
   addTweet(tweet);
-  update();
+  if(targetName==='index' || tweet.user===targetName) update(target);
 };
 
 for(var i = 0; i < 10; i++){

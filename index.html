@@ -4,12 +4,13 @@
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
     <script>
+      // initializaing
       $(document).ready(function() {
         var $tweetBox = $('#tweet');
         var index = streams.home.length - 1;
         while(index >= 0) {
           var tweet = streams.home[index];
-          $tweet = tweetRender(tweet);
+          var $tweet = tweetRender(tweet);
           $tweet.appendTo($tweetBox);
           index -= 1;
         }
@@ -18,10 +19,33 @@
   </head>
   <body>
     <div>
-      <h1>Latest Tweets</h1>
+      <h1 id="title">Latest Tweets</h1>
+      <button id="home" type="button">home</button>
       <div id="tweet">
 
       </div>
     </div>
+    <script>
+      $('#home').click(function() {
+        targetName = 'index';
+        $('.tweets').hide();
+        var $tweetBox = $('#tweet');
+        var index = streams.home.length - 1;
+        $('#title').text('Latest Tweets');
+        for(var i=0; i<50; i++) {
+          var tweet = streams.home[index];
+          var $tweet = tweetRender(tweet);
+          $tweet.appendTo($tweetBox);
+          index -= 1;
+        }
+      });
+      $('#tweet').on('click', $('.button'), function() {
+        if(event.target.className === 'userNames') {
+          console.log(event.target.innerHTML);
+          filter(event.target.innerHTML);
+          $('#title').text(`Latest Tweets By @${event.target.innerHTML}`);
+        }
+      });
+    </script>
   </body>
 </html>
