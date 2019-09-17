@@ -15,7 +15,7 @@ window.users = Object.keys(streams.users);
 
 // stuff added
 var tweetRender = function(tweet) {
-  var $tweet = $('<div></div>');
+  var $tweet = $('<div class="tweets"></div>');
   var userName = '<a href="' + tweet.user + '.html' + '">' + tweet.user + '</a>';
   $tweet.html('@' + userName + ': ' + tweet.message + ' tweeted at ' + tweet.created_at.getHours() + ':' + tweet.created_at.getMinutes());
   return $tweet;
@@ -24,6 +24,7 @@ var tweetRender = function(tweet) {
 var updateCreator = function(wait) {
   var canBeCalled = true;
   var tweetsCollector = [];
+  var limitLen = 50;
   return function() {
     var tweet = streams.home[streams.home.length-1];
     tweetsCollector.unshift(tweetRender(tweet));
@@ -33,13 +34,16 @@ var updateCreator = function(wait) {
       var tweetsToPush = tweetsCollector.length;
       while(tweetsToPush--) {
         $tweetBox.prepend(tweetsCollector.pop());
+        while($('.tweets').length > limitLen) {
+          $(`.tweets:last-child`).remove();
+        }
       }
       (function() { setTimeout(function() { canBeCalled = true; }, wait)})(wait);
     }
   }
 };
 
-var update = updateCreator(10000);
+var update = updateCreator(5000);
 
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet){
