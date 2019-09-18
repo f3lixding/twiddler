@@ -27,8 +27,24 @@
 
       </div>
     </div>
+    <form id="write">
+      say something: <input id="tweetContent" name="content" type="text"><br>
+      <div class="dropdown">
+        login as:
+        <select>
+          <option value="default">choose a user</option>
+          <option value="@shawdrost">@shawdrost</option>
+          <option value="@sharksforcheap">@sharksforcheap</option>
+          <option value="@mracus">@mracus</option>
+          <option value="@douglascalhoun">@douglascalhoun</option>
+        </select>
+      </div>
+      <input id="submit" type="submit" value="tweet!">
+    </form>
     <script>
+      // home button event handler
       $('#home').click(function() {
+        if(targetName === 'index') return;
         targetName = 'index';
         $('.tweets').remove();
         var $tweetBox = $('#tweet');
@@ -38,15 +54,31 @@
           var tweet = streams.home[index];
           var $tweet = tweetRender(tweet);
           $tweet.appendTo($tweetBox);
-          index -= 1;
+          if(index > 0) {
+            index -= 1;
+          } else {
+            index = 0;
+          }
         }
       });
+      // event delegation for user buttons
       $('#tweet').on('click', $('.button'), function() {
         if(event.target.className === 'userNames') {
           console.log(event.target.innerHTML);
           filter(event.target.innerHTML);
           $('#title').text(`Latest Tweets By @${event.target.innerHTML}`);
         }
+      });
+      // user tweet input even handler
+      $('#submit').click(function() {
+        var userChosen = $('.dropdown select')[0];
+        if(userChosen.selectedIndex===0) {
+          alert('Please choose an user before tweeting!');
+          return;
+        }
+        var message = $('#tweetContent')[0].value;
+        var user = userArray[userChosen.selectedIndex];
+        writeTweet(user, message);
       });
     </script>
   </body>

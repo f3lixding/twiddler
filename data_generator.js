@@ -14,6 +14,7 @@ streams.users.douglascalhoun = [];
 window.users = Object.keys(streams.users);
 
 // stuff added
+var userArray = ['shawndrost', 'sharksforcheap', 'mracus', 'douglascalhoun'];
 var targetName = (this.document.URL).split('/').pop().split('.').shift();
 var target = targetName === "index" ? streams.home : streams.users[targetName];
 
@@ -24,8 +25,13 @@ var filter = function(user) { //arg is string
   var index = streams.users[user].length-1;
   var $tweetBox = $('#tweet');
   for(var i=0; i<50; i++) {
-    var $tweet = tweetRender(streams.users[user][index--]);
+    var $tweet = tweetRender(streams.users[user][index]);
     $tweet.appendTo($tweetBox);
+    if(index > 0) {
+      index -= 1;
+    } else {
+      index = 0;
+    }
   }
 };
 
@@ -116,12 +122,9 @@ scheduleNextTweet();
 
 // utility function for letting students add "write a tweet" functionality
 // (note: not used by the rest of this file.)
-var writeTweet = function(message){
-  if(!visitor){
-    throw new Error('set the global visitor property!');
-  }
+var writeTweet = function(user, message){
   var tweet = {};
-  tweet.user = visitor;
+  tweet.user = user;
   tweet.message = message;
   addTweet(tweet);
 };
