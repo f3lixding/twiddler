@@ -50,6 +50,10 @@ table {
 
 /* customize begins */
 /* title */
+body {
+  width: 50%;
+  margin: auto;
+}
 #title {
   font-family: "Montserrat", Times;
   font-size: xx-large;
@@ -75,22 +79,51 @@ table {
   font-weight: bold;
 }
 
-button:hover {
+button:hover,
+#submit:hover {
   background-color: lightgrey;
   color: black;
 }
-
 
 /* tweets */
 #tweet {
   border-style: solid;
   border-radius: 10px;
   border-color: #03dbfc;
-  padding: 2em;
-  background-color: #cbe8f5
+  padding: 1em;
+  background-color: #cbe8f5;
 }
 
 .tweets {
   font-family: "Montserrat", Times;
   padding: 2px;
+}
+
+/* input field */
+#write {
+  border-style: solid;
+  border-radius: 10px;
+  border-color: #03dbfc;
+  padding: 0.5em;
+  margin: 0.5em auto;
+  background-color: #cbe8f5;
+  font-family: "Montserrat", Times;
+  padding: 10px;
+  height: 2.5em;
+}
+
+.dropdown {
+  float: left;
+  width: 200px;
+}
+
+#submit {
+  float: left;
+  width: auto;
+  margin: 2px;
+  background-color: aqua;
+  border-radius: 4px;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+  font-weight: bold;
 }
