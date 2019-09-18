@@ -14,9 +14,8 @@ streams.users.douglascalhoun = [];
 window.users = Object.keys(streams.users);
 
 // stuff added
-var userArray = ['shawndrost', 'sharksforcheap', 'mracus', 'douglascalhoun'];
+var userArray = ['placeholder', 'shawndrost', 'sharksforcheap', 'mracus', 'douglascalhoun'];
 var targetName = (this.document.URL).split('/').pop().split('.').shift();
-var target = targetName === "index" ? streams.home : streams.users[targetName];
 
 var filter = function(user) { //arg is string
   var $tweets = $('.tweets');
@@ -30,7 +29,7 @@ var filter = function(user) { //arg is string
     if(index > 0) {
       index -= 1;
     } else {
-      index = 0;
+      break;
     }
   }
 };
@@ -53,8 +52,8 @@ var updateCreator = function(wait) {
   var canBeCalled = true;
   var tweetsCollector = [];
   var limitLen = 50;
-  return function(target) {
-    var tweet = target[target.length-1];
+  return function() {
+    var tweet = streams.home[streams.home.length-1];
     tweetsCollector.unshift(tweetRender(tweet));
     if(canBeCalled) {
       canBeCalled = false;
@@ -107,7 +106,7 @@ var generateRandomTweet = function(){
   tweet.message = randomMessage();
   tweet.created_at = new Date();
   addTweet(tweet);
-  if(targetName==='index' || tweet.user===targetName) update(target);
+  if(targetName==='index' || tweet.user===targetName) update();
 };
 
 for(var i = 0; i < 10; i++){
@@ -126,5 +125,7 @@ var writeTweet = function(user, message){
   var tweet = {};
   tweet.user = user;
   tweet.message = message;
+  tweet.created_at = new Date();
   addTweet(tweet);
+  update();
 };

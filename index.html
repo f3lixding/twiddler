@@ -57,7 +57,7 @@
           if(index > 0) {
             index -= 1;
           } else {
-            index = 0;
+            break;
           }
         }
       });
@@ -71,6 +71,7 @@
       });
       // user tweet input even handler
       $('#submit').click(function() {
+        event.preventDefault();
         var userChosen = $('.dropdown select')[0];
         if(userChosen.selectedIndex===0) {
           alert('Please choose an user before tweeting!');
@@ -79,6 +80,7 @@
         var message = $('#tweetContent')[0].value;
         var user = userArray[userChosen.selectedIndex];
         writeTweet(user, message);
+        update();
       });
     </script>
   </body>
