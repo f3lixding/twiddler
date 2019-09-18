@@ -16,6 +16,8 @@
         }
       });
     </script>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
   </head>
   <body>
     <div>
@@ -28,7 +30,7 @@
     <script>
       $('#home').click(function() {
         targetName = 'index';
-        $('.tweets').hide();
+        $('.tweets').remove();
         var $tweetBox = $('#tweet');
         var index = streams.home.length - 1;
         $('#title').text('Latest Tweets');

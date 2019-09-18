@@ -19,11 +19,13 @@ var target = targetName === "index" ? streams.home : streams.users[targetName];
 
 var filter = function(user) { //arg is string
   var $tweets = $('.tweets');
+  $tweets.remove();
   targetName = user;
-  for(var i=0; i<$tweets.length; i++) {
-    if($tweets[i].className.split(' ')[1] != user) {
-      $($tweets[i]).hide();
-    }
+  var index = streams.users[user].length-1;
+  var $tweetBox = $('#tweet');
+  for(var i=0; i<50; i++) {
+    var $tweet = tweetRender(streams.users[user][index--]);
+    $tweet.appendTo($tweetBox);
   }
 };
 
@@ -53,7 +55,10 @@ var updateCreator = function(wait) {
       var $tweetBox = $('#tweet');
       var tweetsToPush = tweetsCollector.length;
       while(tweetsToPush--) {
-        $tweetBox.prepend(tweetsCollector.pop());
+        var temp = tweetsCollector.pop();
+        if(targetName === 'index' || targetName === getUserName(temp)) {
+          $tweetBox.prepend(temp);
+        }
         while($('.tweets').length > limitLen) {
           $('.tweets:last-child').remove();
         }
